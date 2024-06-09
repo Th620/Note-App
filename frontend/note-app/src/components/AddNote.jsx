@@ -1,13 +1,13 @@
 import React from "react";
 import { IoClose } from "react-icons/io5";
 
-const AddNote = ({ setAddNote }) => {
+const AddNote = ({ setNote, btnLabel }) => {
   return (
     <div className="absolute top-0 left-0 w-full h-screen flex items-center justify-center overflow-hidden bg-bgGray z-50 ">
       <div className="relative w-11/12 md:w-2/3 lg:w-1/2 py-8 bg-gray-100 rounded-lg flex items-center justify-center px-6">
         <IoClose
           className="absolute size-6 text-gray-600 top-3 right-6 hover:text-gray-800"
-          onClick={() => setAddNote(false)}
+          onClick={() => setNote(false)}
         />
         <form className="w-full flex flex-col justify-center items-center">
           <input
@@ -28,7 +28,7 @@ const AddNote = ({ setAddNote }) => {
             type="submit"
             className="w-full bg-blue-500 py-3 rounded-md text-white"
           >
-            Add Note
+            {btnLabel}
           </button>
         </form>
       </div>

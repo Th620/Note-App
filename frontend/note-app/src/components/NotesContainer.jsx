@@ -7,7 +7,7 @@ const NotesContainer = () => {
   const [addNote, setAddNote] = useState(true);
   return (
     <div className="grid grid-cols-6 gap-y-3 gap-x-8 w-full min-h-screen py-10 pt-24">
-      {addNote && <AddNote setAddNote={setAddNote} />}
+      {addNote && <AddNote setNote={setAddNote} btnLabel={"Add Note"} />}
       <Note setAddNote={setAddNote} />
       {!addNote && (
         <button

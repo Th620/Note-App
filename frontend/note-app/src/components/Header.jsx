@@ -4,7 +4,7 @@ import { CgProfile } from "react-icons/cg";
 
 const Header = ({ openMenu, setOpenMenu }) => {
   return (
-    <header className="fixed top-0 left-0 bg-white w-screen flex justify-between items-center px-6 pr-8 py-4 z-50 shadow-sm">
+    <header className="fixed top-0 left-0 bg-white w-screen flex justify-between items-center px-6 pr-8 py-4 z-50 shadow-sm text-blackALT">
       <Link to={"/"}>
         <h1 className="font-semibold text-2xl">Notes App</h1>
       </Link>

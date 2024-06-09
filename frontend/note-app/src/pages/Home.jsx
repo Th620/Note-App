@@ -6,8 +6,7 @@ const Home = () => {
   const [openMenu, setOpenMenu] = useState(false);
   return (
     <div
-      onClick={(e) => {
-        console.log("test");
+      onClick={() => {
         if (openMenu) {
           setOpenMenu(false);
         }
