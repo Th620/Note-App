@@ -7,11 +7,11 @@ import Singin from "./pages/Singin";
 function App() {
   return (
     <div className="App">
-      <Routes>
-        <Route index path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Singin />} />
-      </Routes>
+        <Routes>
+          <Route index path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Singin />} />
+        </Routes>
     </div>
   );
 }

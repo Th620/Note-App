@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import { Link } from "react-router-dom";
 
 const Singin = () => {
+  
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center px-10">
       <Header />
