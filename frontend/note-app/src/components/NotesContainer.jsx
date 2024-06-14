@@ -4,7 +4,7 @@ import { FaPlus } from "react-icons/fa";
 import AddNote from "./AddNote";
 
 const NotesContainer = () => {
-  const [addNote, setAddNote] = useState(true);
+  const [addNote, setAddNote] = useState(false);
   return (
     <div className="grid grid-cols-6 gap-y-3 gap-x-8 w-full min-h-screen py-10 pt-24">
       {addNote && <AddNote setNote={setAddNote} btnLabel={"Add Note"} />}

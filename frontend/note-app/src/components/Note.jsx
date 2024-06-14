@@ -6,7 +6,7 @@ import AddNote from "./AddNote";
 
 const Note = () => {
   const [editNote, setEditNote] = useState(false);
-  const [isPinned, setIsPinned] = useState(true);
+  const [isPinned, setIsPinned] = useState(false);
   return (
     <div className="relative border rounded-sm py-2 px-4 col-span-6 md:col-span-3 lg:col-span-2 h-fit ">
       <RiPushpinLine
