@@ -1,6 +1,7 @@
 const express = require("express");
 const connectDB = require("./config/db");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const {
   invalidPathHandler,
@@ -20,6 +21,12 @@ connectDB();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(
+  cors({
+    origin: "http://localhost:5050",
+    credentials: true,
+  })
+);
 
 // Routes
 app.use("/api/users", userRoutes);
