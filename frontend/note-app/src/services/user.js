@@ -17,13 +17,14 @@ const signin = async ({ name, email, password }) => {
   }
 };
 
-const login = async ({ name, email, password }) => {
+const login = async ({ email, password }) => {
   try {
-    const { data } = axios.post("/users/login", {
-      name,
+    console.log({ email, password });
+    const { data } = await axios.get("/users/login", {
       email,
       password,
     });
+    console.log({ email, password });
     console.log(data);
     return data;
   } catch (error) {
@@ -35,4 +36,4 @@ const login = async ({ name, email, password }) => {
   }
 };
 
-export { signin };
+export { signin, login };
