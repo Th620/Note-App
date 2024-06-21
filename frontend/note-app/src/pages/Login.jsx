@@ -11,7 +11,8 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const user = useSelector((state) => state.user);
+  let user = useSelector((state) => state.user);
+  console.log(user);
 
   const {
     register,
@@ -27,12 +28,9 @@ const Login = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: ({ email, password }) => {
-      console.log({ email, password });
-      console.log(login({ email, password }));
       return login({ email, password });
     },
     onSuccess: (data) => {
-      console.log("success");
       dispatch(userActions.setUserInfo(data));
       localStorage.setItem("account", JSON.stringify(data));
     },

@@ -19,13 +19,10 @@ const signin = async ({ name, email, password }) => {
 
 const login = async ({ email, password }) => {
   try {
-    console.log({ email, password });
-    const { data } = await axios.get("/users/login", {
+    const { data } = await axios.post("/users/login", {
       email,
       password,
     });
-    console.log({ email, password });
-    console.log(data);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message) {
