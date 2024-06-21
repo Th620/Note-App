@@ -4,12 +4,13 @@ import { CgProfile } from "react-icons/cg";
 import { useDispatch } from "react-redux";
 import { logout } from "../store/actions/user";
 
-const Header = ({ openMenu, setOpenMenu }) => {
+const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [openMenu, setOpenMenu] = useState(false);
+
   const { name } = localStorage.account ? JSON.parse(localStorage.account) : "";
-  const [profile, setProfile] = useState("");
 
   return (
     <header className="fixed top-0 left-0 bg-white w-screen flex justify-between items-center px-6 pr-8 py-4 z-50 shadow-sm text-blackALT">
@@ -23,7 +24,8 @@ const Header = ({ openMenu, setOpenMenu }) => {
       >
         {name ? (
           name.split(" ").length >= 2 ? (
-            name.split(" ")[0][0].toUpperCase() + name.split(" ")[1][0].toUpperCase()
+            name.split(" ")[0][0].toUpperCase() +
+            name.split(" ")[1][0].toUpperCase()
           ) : (
             name[0].toUpperCase()
           )
@@ -42,8 +44,10 @@ const Header = ({ openMenu, setOpenMenu }) => {
             onClick={() => {
               if (name) {
                 dispatch(logout());
+                navigate("/");
               } else {
                 navigate("/register");
+                setOpenMenu(false);
               }
             }}
             className="bg-blue-500 px-3 py-1 pb-2 rounded-sm text-white"

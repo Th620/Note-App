@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../components/Header";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../store/reducers/userSlice";
 import { signin } from "../services/user";
 
 const Singin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  let user = useSelector((state) => state.user);
 
   const {
     register,
@@ -29,7 +31,6 @@ const Singin = () => {
       return signin({ name, email, password });
     },
     onSuccess: (data) => {
-      console.log("success");
       dispatch(userActions.setUserInfo(data));
       localStorage.setItem("account", JSON.stringify(data));
       navigate("/");
@@ -39,10 +40,17 @@ const Singin = () => {
     },
   });
 
+
   const onSubmit = (data) => {
     const { name, email, password } = data;
     mutate({ name, email, password });
   };
+
+  useEffect(() => {
+    if (user.userInfo) {
+      navigate("/");
+    }
+  }, [navigate, user.userInfo]);
 
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center px-10">
@@ -57,7 +65,6 @@ const Singin = () => {
           </label>
           <input
             type="text"
-            name="name"
             {...register("name", {
               required: {
                 value: true,
@@ -77,7 +84,6 @@ const Singin = () => {
           </label>
           <input
             type="email"
-            name="email"
             {...register("email", {
               required: {
                 value: true,

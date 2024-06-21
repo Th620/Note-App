@@ -8,16 +8,17 @@ const Note = () => {
   const [editNote, setEditNote] = useState(false);
   const [isPinned, setIsPinned] = useState(false);
   return (
-    <div className="relative border rounded-sm py-2 px-4 col-span-6 md:col-span-3 lg:col-span-2 h-fit ">
-      <RiPushpinLine
-        onClick={() => {
-          setIsPinned((prev) => !prev);
-        }}
-        className={`absolute top-3 right-4 size-5 ${
-          isPinned ? "text-blue-500" : "text-gray-300"
-        }`}
-      />
-      <h3 className="text-lg font-semibold text-blackALT mr-10">Note One</h3>
+    <div className="border rounded-sm py-2 px-4 col-span-6 md:col-span-3 lg:col-span-2 h-fit ">
+      <div className="flex justify-between">
+        <h3 className="text-lg font-semibold text-blackALT mr-10">Note One</h3>
+        <RiPushpinLine
+          onClick={() => {
+            setIsPinned((prev) => !prev);
+          }}
+          className={`size-5 ${isPinned ? "text-blue-500" : "text-gray-300"}`}
+        />
+      </div>
+
       <p className="font-roboto text-blackALT">
         note component note component note component note component
       </p>

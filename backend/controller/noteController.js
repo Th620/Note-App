@@ -1,9 +1,16 @@
 const Note = require("../models/Note");
-const User = require("../models/User");
 
 const createNote = async (req, res, next) => {
   try {
     const { title, content, tags } = req.body;
+
+    if (
+      (!content || content === "") &&
+      (!title || title === "Untitled" || title === "")
+    ) {
+      throw new Error("You can't add an empty note note");
+    }
+
     const note = await Note.create({
       title,
       content,
@@ -11,6 +18,15 @@ const createNote = async (req, res, next) => {
       tags,
     });
     return res.status(201).json(note);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getNotes = async (req, res, next) => {
+  try {
+    const notes = await Note.find();
+    return res.json(notes);
   } catch (error) {
     next(error);
   }
@@ -59,4 +75,4 @@ const deleteNote = async (req, res, next) => {
   }
 };
 
-module.exports = { createNote, editNote, deleteNote };
+module.exports = { createNote, getNotes, editNote, deleteNote };

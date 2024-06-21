@@ -1,17 +1,30 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { useForm } from "react-hook-form";
 import Tag from "./Tag";
+import { useMutation } from "@tanstack/react-query";
+import { createNote } from "../services/note";
 
 const AddNote = ({ setNote, btnLabel }) => {
-  const { register, handleSubmit } = useForm();
+  let user = JSON.parse(localStorage.getItem("account"));
+  let token = user?.token;
 
-  // const [tagValue, setTagValue] = useState("");
+  const { mutate, isPending } = useMutation({
+    mutationFn: ({ title, content, tags, token }) => {
+      console.log();
+      return createNote({ title, content, tags, token });
+    },
+    onSuccess: (data) => {
+      setNote(false);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const [title, setTitle] = useState("Untitled");
+  const [content, setContent] = useState("");
   const [tags, setTags] = useState([]);
   const [message, setMessage] = useState("");
-  const messageRef = useRef("");
-
-  const onSubmit = () => {};
 
   return (
     <div className="absolute top-0 left-0 w-full h-screen flex items-center justify-center overflow-hidden bg-bgGray z-50 text-blackALT">
@@ -20,18 +33,21 @@ const AddNote = ({ setNote, btnLabel }) => {
           className="absolute size-6 text-gray-600 top-3 right-6 hover:text-gray-800"
           onClick={() => setNote(false)}
         />
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="w-full flex flex-col justify-center items-center gap-y-4"
-        >
+        <form className="w-full flex flex-col justify-center items-center gap-y-4">
           <input
             type="text"
-            {...register("title")}
+            name="title"
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
             placeholder="Add Title"
             className="w-full outline-none text-3xl bg-transparent"
           />
           <textarea
-            {...register("content")}
+            name="content"
+            onChange={(e) => {
+              setContent(e.target.value);
+            }}
             rows="8"
             placeholder="Content..."
             className="w-full resize-none rounded-sm outline-none px-3 py-1"
@@ -45,7 +61,7 @@ const AddNote = ({ setNote, btnLabel }) => {
                 placeholder="Add Tag"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    e.target.value = e.target.value.trim();
+                    e.target.value = e.target.value.trim().replace(/\s+/g, " ");
                     for (let i = 0; i <= tags.length; i++) {
                       if (tags[i] === e.target.value) {
                         e.target.value = "";
@@ -56,12 +72,12 @@ const AddNote = ({ setNote, btnLabel }) => {
                       }
                     }
                     if (e.target.value !== "") {
-                      setTags([...tags, e.target.value]);
+                      setTags([...tags, e.target.value.replace(/\s+/g, " ")]);
                       e.target.value = "";
                     }
                   }
                 }}
-                className="rounded-sm text-sm py-1 px-3 outline-none"
+                className="rounded-sm text-sm py-1 px-3 outline-none w-2/3"
               />
               <p className="text-[10px] text-red-500">{message}</p>
             </div>
@@ -79,8 +95,15 @@ const AddNote = ({ setNote, btnLabel }) => {
             </div>
           </div>
           <button
-            type="submit"
-            className="w-full bg-blue-500 py-3 rounded-sm text-white"
+            type="button"
+            disabled={isPending}
+            onClick={() => {
+              if (title === "") {
+                setTitle("Untitled")
+              }
+              mutate({ title, content, tags, token });
+            }}
+            className="w-full bg-blue-500 py-3 rounded-sm text-white disabled:opacity-50"
           >
             {btnLabel}
           </button>
