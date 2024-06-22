@@ -11,13 +11,15 @@ const AddNote = ({ setNote, btnLabel, note }) => {
   const queryClient = useQueryClient();
 
   const { mutate: mutateAddNote, isPending: AddNoteIsPending } = useMutation({
-    mutationFn: ({ title, content, tags, token }) => {
+    mutationFn: ({ title = "Untitled", content, tags, token }) => {
       return createNote({ title, content, tags, token });
     },
     onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
       setNote(false);
     },
     onError: (error) => {
+      setNote(false);
       console.log(error);
     },
   });
@@ -28,14 +30,15 @@ const AddNote = ({ setNote, btnLabel, note }) => {
     },
     onSuccess: (data) => {
       setNote(false);
-      queryClient.invalidateQueries({ queryKey: ["notes"]});
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
     },
     onError: (error) => {
+      setNote(false);
       console.log(error);
     },
   });
 
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState();
   const [content, setContent] = useState("");
   const [tags, setTags] = useState([]);
   const [message, setMessage] = useState("");
@@ -122,9 +125,6 @@ const AddNote = ({ setNote, btnLabel, note }) => {
             type="button"
             disabled={AddNoteIsPending || EditNoteIsPending}
             onClick={() => {
-              if (title === "") {
-                setTitle("Untitled");
-              }
               if (btnLabel === "Edit Note") {
                 mutateEditNote({ title, content, tags, token, id: note._id });
               } else {

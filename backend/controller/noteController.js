@@ -6,9 +6,9 @@ const createNote = async (req, res, next) => {
 
     if (
       (!content || content === "") &&
-      (!title || title === "Untitled" || title === "")
+      (!title  || title === "")
     ) {
-      throw new Error("You can't add an empty note note");
+      throw new Error("You can't add an empty note");
     }
 
     const note = await Note.create({

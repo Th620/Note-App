@@ -29,7 +29,7 @@ const Note = ({ note }) => {
       },
     });
   return (
-    <div className="flex flex-col border rounded-sm py-2 px-4 w-full md:w-[47%] lg:w-[31%]  gap-y-2 hover:bg-slate-50 transition-colors duration-200">
+    <div className="flex flex-col border rounded-sm h-fit py-2 px-4 w-full md:w-[47%] lg:w-[31%]  gap-y-2 hover:bg-slate-50 transition-colors duration-200">
       <div className="flex justify-between">
         <h3 className="text-lg font-semibold text-blackALT mr-10">
           {note.title}
@@ -50,7 +50,11 @@ const Note = ({ note }) => {
           <Tag tag={item} key={item} />
         ))}
       </div>
-      <p className="my-2 text-slate-400">03-06-2024</p>
+      <p className="my-2 text-slate-400">
+        {new Date(note?.createdAt).toLocaleString("default", {
+          mounth: "long",
+        })}
+      </p>
       <div className="flex items-center gap-x-3 bottom-0">
         <button
           type="button"

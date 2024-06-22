@@ -12,7 +12,6 @@ const Login = () => {
   const navigate = useNavigate();
 
   let user = useSelector((state) => state.user);
-  console.log(user);
 
   const {
     register,
@@ -64,18 +63,18 @@ const Login = () => {
           <input
             type="email"
             {...register(
-              "email"
-              //    {
-              //   required: {
-              //     value: true,
-              //     message: "email is required",
-              //   },
-              //   pattern: {
-              //     value:
-              //       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-              //     message: "Enter a valid email",
-              //   },
-              // }
+              "email",
+                 {
+                required: {
+                  value: true,
+                  message: "email is required",
+                },
+                pattern: {
+                  value:
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                  message: "Enter a valid email",
+                },
+              }
             )}
             placeholder="Email"
             className={`w-full p-2 border px-3 outline-none rounded-sm ${
@@ -92,17 +91,17 @@ const Login = () => {
             type="password"
             name="password"
             {...register(
-              "password"
-              //    {
-              //   required: {
-              //     value: true,
-              //     message: "Password is required",
-              //   },
-              //   minLength: {
-              //     value: 8,
-              //     message: "Password must be at least 8 characters",
-              //   },
-              // }
+              "password",
+                 {
+                required: {
+                  value: true,
+                  message: "Password is required",
+                },
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters",
+                },
+              }
             )}
             placeholder="Password"
             className={`w-full p-2 border px-3 outline-none rounded-sm ${
