@@ -8,7 +8,7 @@ const authGuard = async (req, res, next) => {
   ) {
     try {
       const token = req.headers.authorization.split(" ")[1];
-      const { id } = verify(token, "secret");
+      const { id } = verify(token, process.env.JWT_SECRET);
       req.user = await User.findById(id).select("-passwod");
       next();
     } catch (error) {
