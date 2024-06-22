@@ -54,8 +54,21 @@ const NotesContainer = () => {
           <span>There Is No Notes</span>
         </div>
       ) : (
-        notes.map((note) => <Note note={note} key={note._id} />)
+        notes
+          .sort((a, b) => {
+            return new Date(a?.updateAt) - new Date(b?.updatedAt);
+          })
+          .filter((note) => note?.isPinned === true)
+          .map((note) => <Note note={note} key={note._id} />)
       )}
+
+      {notes.length !== 0 &&
+        notes
+          .sort((a, b) => {
+            return new Date(a?.updateAt) - new Date(b?.updatedAt);
+          })
+          .filter((note) => note?.isPinned === false)
+          .map((note) => <Note note={note} key={note._id} />)}
 
       {!addNote && (
         <button

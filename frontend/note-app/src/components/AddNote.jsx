@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNote, editNote } from "../services/note";
 import TagContainer from "./TagContainer";
 
@@ -62,10 +62,10 @@ const AddNote = ({ setNote, btnLabel, note }) => {
           <input
             type="text"
             name="title"
+            value={title || ""}
             onChange={(e) => {
               setTitle(e.target.value);
             }}
-            value={title}
             placeholder="Add Title"
             className="w-full outline-none text-3xl bg-transparent"
           />
@@ -75,7 +75,7 @@ const AddNote = ({ setNote, btnLabel, note }) => {
               setContent(e.target.value);
             }}
             rows="8"
-            value={content}
+            value={content || ""}
             placeholder="Content..."
             className="w-full resize-none rounded-sm outline-none px-3 py-1"
           ></textarea>
@@ -85,6 +85,7 @@ const AddNote = ({ setNote, btnLabel, note }) => {
               <input
                 type="text"
                 name="tags"
+                defaultValue={""}
                 placeholder="Add Tag"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {

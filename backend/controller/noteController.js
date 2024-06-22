@@ -4,10 +4,7 @@ const createNote = async (req, res, next) => {
   try {
     const { title, content, tags } = req.body;
 
-    if (
-      (!content || content === "") &&
-      (!title  || title === "")
-    ) {
+    if ((!content || content === "") && (!title || title === "")) {
       throw new Error("You can't add an empty note");
     }
 
@@ -35,7 +32,7 @@ const getNotes = async (req, res, next) => {
 const editNote = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { title, content, tags, isPinned } = req.body;
+    const { title, content, tags } = req.body;
     const { user } = req;
 
     let note = await Note.findOne({ _id: id, user: user._id });
@@ -50,7 +47,28 @@ const editNote = async (req, res, next) => {
 
     note.content = content || note.content;
     note.tags = tags || note.tags;
-    note.isPinned = isPinned || note.isPinned;
+
+    const editedNote = await note.save();
+
+    return res.json(editedNote);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const pinNote = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { isPinned } = req.body;
+    const { user } = req;
+
+    let note = await Note.findOne({ _id: id, user: user._id });
+
+    if (!note) {
+      throw new Error("Note doesn't exist");
+    }
+
+    note.isPinned = isPinned;
 
     const editedNote = await note.save();
 
@@ -76,4 +94,4 @@ const deleteNote = async (req, res, next) => {
   }
 };
 
-module.exports = { createNote, getNotes, editNote, deleteNote };
+module.exports = { createNote, getNotes, editNote, pinNote, deleteNote };

@@ -70,15 +70,18 @@ const editNote = async ({ title, content, tags, token, id }) => {
   }
 };
 
-const deleteNote = async ({ token, id }) => {
+const pinNote = async ({ isPinned, token, id }) => {
   try {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await axios.delete(
-      `/notes/delete/${id}`,
+    const { data } = await axios.put(
+      `/notes/pin/${id}`,
+      {
+        isPinned,
+      },
       config
     );
     return data;
@@ -91,4 +94,22 @@ const deleteNote = async ({ token, id }) => {
   }
 };
 
-export { createNote, getNotes, editNote, deleteNote };
+const deleteNote = async ({ token, id }) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await axios.delete(`/notes/delete/${id}`, config);
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message) {
+      throw new Error(error.response.data.message);
+    } else {
+      throw new Error(error.response.data.message);
+    }
+  }
+};
+
+export { createNote, getNotes, editNote, pinNote, deleteNote };
