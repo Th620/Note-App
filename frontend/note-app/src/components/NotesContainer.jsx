@@ -2,13 +2,40 @@ import React, { useState } from "react";
 import Note from "./Note";
 import { FaPlus } from "react-icons/fa";
 import AddNote from "./AddNote";
+import { useQuery } from "@tanstack/react-query";
+import { getNotes } from "../services/note";
 
 const NotesContainer = () => {
+  let user = JSON.parse(localStorage.getItem("account"));
+  let token = user?.token;
+
   const [addNote, setAddNote] = useState(false);
+
+  const {
+    data: notes,
+    isLoading,
+    error,
+  } = useQuery({
+    queryFn: () => getNotes({ token }),
+    queryKey: ["notes"],
+  });
+
+  if (isLoading) {
+    return "Loading...";
+  }
+
+  if (error) {
+    return "An Error as occured" + error.message;
+  }
+
   return (
-    <div className="grid grid-cols-6 gap-y-3 gap-x-8 w-full min-h-screen py-10 pt-24">
+    <div className="flex flex-wrap justify-between items-stretch gap-y-5 gap-x-8 w-full min-h-screen py-10 pt-24">
       {addNote && <AddNote setNote={setAddNote} btnLabel={"Add Note"} />}
-      <Note />
+
+      {notes.map((note) => (
+        <Note note={note} key={note._id} />
+      ))}
+
       {!addNote && (
         <button
           onClick={() => setAddNote(true)}

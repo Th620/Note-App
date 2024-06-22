@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
-import Tag from "./Tag";
 import { useMutation } from "@tanstack/react-query";
 import { createNote } from "../services/note";
+import TagContainer from "./TagContainer";
 
 const AddNote = ({ setNote, btnLabel }) => {
   let user = JSON.parse(localStorage.getItem("account"));
@@ -84,7 +84,7 @@ const AddNote = ({ setNote, btnLabel }) => {
 
             <div className="flex flex-wrap items-center gap-1 w-2/3">
               {tags.map((tag, index) => (
-                <Tag
+                <TagContainer
                   tag={tag}
                   key={index}
                   index={index}

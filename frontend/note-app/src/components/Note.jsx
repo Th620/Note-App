@@ -3,14 +3,17 @@ import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { RiPushpinLine } from "react-icons/ri";
 import AddNote from "./AddNote";
+import Tag from "./Tag";
 
-const Note = () => {
+const Note = ({ note }) => {
   const [editNote, setEditNote] = useState(false);
   const [isPinned, setIsPinned] = useState(false);
   return (
-    <div className="border rounded-sm py-2 px-4 col-span-6 md:col-span-3 lg:col-span-2 h-fit ">
+    <div className="flex flex-col border rounded-sm py-2 px-4 w-full md:w-[47%] lg:w-[31%]  gap-y-2 hover:bg-slate-50 transition-colors duration-200">
       <div className="flex justify-between">
-        <h3 className="text-lg font-semibold text-blackALT mr-10">Note One</h3>
+        <h3 className="text-lg font-semibold text-blackALT mr-10">
+          {note.title}
+        </h3>
         <RiPushpinLine
           onClick={() => {
             setIsPinned((prev) => !prev);
@@ -19,11 +22,14 @@ const Note = () => {
         />
       </div>
 
-      <p className="font-roboto text-blackALT">
-        note component note component note component note component
-      </p>
+      <p className="font-roboto text-blackALT h-[50px] overflow-hidden">{note.content} </p>
+      <div className="flex gap-x-2">
+        {note.tags.map((item) => (
+          <Tag tag={item} key={item} />
+        ))}
+      </div>
       <p className="my-2 text-slate-400">03-06-2024</p>
-      <div className="flex items-center gap-x-3">
+      <div className="flex items-center gap-x-3 bottom-0">
         <button
           type="button"
           onClick={() => {

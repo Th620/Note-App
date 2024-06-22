@@ -1,22 +1,11 @@
 import React from "react";
-import { IoClose } from "react-icons/io5";
+import { PiHash } from "react-icons/pi";
 
-const Tag = ({ tag, index, tags, setTags }) => {
+const Tag = ({ tag }) => {
   return (
-    <div className="flex items-center gap-x-2 text-sm bg-gray-200 w-fit px-2 py-1">
-      <p>{tag}</p>
-      <IoClose
-        onClick={() => {
-          let newTags = [];
-          for (let i = 0; i < tags.length; i++) {
-            if (i !== index) {
-              newTags = [...newTags, tags[i]];
-            }
-          }
-          setTags(newTags);
-        }}
-        className="text-gray-500 cursor-pointer hover:text-gray-700 transition-colors duration-100"
-      />
+    <div className="flex gap-x-1 bg-blue-100 px-1 text-[11px] text-blue-950 hover:bg-blue-200 transition-colors duration-300 cursor-pointer">
+      <PiHash/>
+      <span>{tag}</span>
     </div>
   );
 };
