@@ -16,7 +16,6 @@ const createNote = async ({ title, content, tags, token }) => {
       },
       config
     );
-    console.log(data);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message) {
@@ -47,7 +46,6 @@ const getNotes = async ({ token }) => {
 
 const editNote = async ({ title, content, tags, token, id }) => {
   try {
-    console.log({ title, content, tags, token, id });
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -62,7 +60,6 @@ const editNote = async ({ title, content, tags, token, id }) => {
       },
       config
     );
-    console.log(data);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message) {
@@ -73,4 +70,25 @@ const editNote = async ({ title, content, tags, token, id }) => {
   }
 };
 
-export { createNote, getNotes, editNote };
+const deleteNote = async ({ token, id }) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await axios.delete(
+      `/notes/delete/${id}`,
+      config
+    );
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message) {
+      throw new Error(error.response.data.message);
+    } else {
+      throw new Error(error.response.data.message);
+    }
+  }
+};
+
+export { createNote, getNotes, editNote, deleteNote };

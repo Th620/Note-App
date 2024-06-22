@@ -4,10 +4,30 @@ import { MdDelete } from "react-icons/md";
 import { RiPushpinLine } from "react-icons/ri";
 import AddNote from "./AddNote";
 import Tag from "./Tag";
+import { deleteNote } from "../services/note";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const Note = ({ note }) => {
+  let user = JSON.parse(localStorage.getItem("account"));
+  let token = user?.token;
+
   const [editNote, setEditNote] = useState(false);
   const [isPinned, setIsPinned] = useState(false);
+
+  const queryClient = useQueryClient();
+
+  const { mutate: mutateDeleteNote, isPending: DeleteNoteIsPending } =
+    useMutation({
+      mutationFn: ({ token, id }) => {
+        return deleteNote({ token, id });
+      },
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({ queryKey: ["notes"] });
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    });
   return (
     <div className="flex flex-col border rounded-sm py-2 px-4 w-full md:w-[47%] lg:w-[31%]  gap-y-2 hover:bg-slate-50 transition-colors duration-200">
       <div className="flex justify-between">
@@ -22,7 +42,9 @@ const Note = ({ note }) => {
         />
       </div>
 
-      <p className="font-roboto text-blackALT h-[50px] overflow-hidden">{note.content} </p>
+      <p className="font-roboto text-blackALT h-[50px] overflow-hidden">
+        {note.content}{" "}
+      </p>
       <div className="flex gap-x-2">
         {note.tags.map((item) => (
           <Tag tag={item} key={item} />
@@ -43,7 +65,9 @@ const Note = ({ note }) => {
         <button
           type="button"
           onClick={() => {
-            alert("you want to delete this note?");
+            if (window.confirm("you want to delete this note?")) {
+              mutateDeleteNote({ token, id: note._id });
+            }
           }}
           className="flex items-center text-slate-500  gap-x-1 text-sm hover:text-slate-600  transition-colors duration-100"
         >
@@ -51,7 +75,9 @@ const Note = ({ note }) => {
           <span>Delete</span>
         </button>
       </div>
-      {editNote && <AddNote setNote={setEditNote} btnLabel={"Edit Note"} note={note} />}
+      {editNote && (
+        <AddNote setNote={setEditNote} btnLabel={"Edit Note"} note={note} />
+      )}
     </div>
   );
 };
