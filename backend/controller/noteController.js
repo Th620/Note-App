@@ -25,7 +25,7 @@ const createNote = async (req, res, next) => {
 
 const getNotes = async (req, res, next) => {
   try {
-    const notes = await Note.find();
+    const notes = await Note.find({ user: req.user._id });
     return res.json(notes);
   } catch (error) {
     next(error);
@@ -36,8 +36,9 @@ const editNote = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { title, content, tags, isPinned } = req.body;
+    const { user } = req;
 
-    let note = await Note.findOne({ _id: id, user: req.user._id });
+    let note = await Note.findOne({ _id: id, user: user._id });
 
     if (!note) {
       throw new Error("Note doesn't exist");
