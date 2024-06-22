@@ -35,6 +35,33 @@ const getNotes = async ({ token }) => {
       },
     };
     const { data } = await axios.get("/notes", config);
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message) {
+      throw new Error(error.response.data.message);
+    } else {
+      throw new Error(error.response.data.message);
+    }
+  }
+};
+
+const editNote = async ({ title, content, tags, token, id }) => {
+  try {
+    console.log({ title, content, tags, token, id });
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await axios.put(
+      `/notes/edit/${id}`,
+      {
+        title,
+        content,
+        tags,
+      },
+      config
+    );
     console.log(data);
     return data;
   } catch (error) {
@@ -46,4 +73,4 @@ const getNotes = async ({ token }) => {
   }
 };
 
-export { createNote, getNotes };
+export { createNote, getNotes, editNote };

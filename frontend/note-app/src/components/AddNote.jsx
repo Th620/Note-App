@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { useMutation } from "@tanstack/react-query";
-import { createNote } from "../services/note";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createNote, editNote } from "../services/note";
 import TagContainer from "./TagContainer";
 
-const AddNote = ({ setNote, btnLabel }) => {
+const AddNote = ({ setNote, btnLabel, note }) => {
   let user = JSON.parse(localStorage.getItem("account"));
   let token = user?.token;
 
-  const { mutate, isPending } = useMutation({
+  const queryClient = useQueryClient();
+
+  const { mutate: mutateAddNote, isPending: AddNoteIsPending } = useMutation({
     mutationFn: ({ title, content, tags, token }) => {
-      console.log();
       return createNote({ title, content, tags, token });
     },
     onSuccess: (data) => {
@@ -21,13 +22,34 @@ const AddNote = ({ setNote, btnLabel }) => {
     },
   });
 
-  const [title, setTitle] = useState("Untitled");
+  const { mutate: mutateEditNote, isPending: EditNoteIsPending } = useMutation({
+    mutationFn: ({ title, content, tags, token, id }) => {
+      return editNote({ title, content, tags, token, id });
+    },
+    onSuccess: (data) => {
+      setNote(false);
+      queryClient.invalidateQueries({ queryKey: ["notes"]});
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState([]);
   const [message, setMessage] = useState("");
 
+  useEffect(() => {
+    if (note) {
+      setTitle(note.title);
+      setContent(note.content);
+      setTags(note.tags);
+    }
+  }, [note]);
+
   return (
-    <div className="absolute top-0 left-0 w-full h-screen flex items-center justify-center overflow-hidden bg-bgGray z-50 text-blackALT">
+    <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center overflow-hidden bg-bgGray z-50 text-blackALT">
       <div className="relative w-11/12 md:w-2/3 lg:w-2/6 py-8 bg-gray-100 rounded-lg flex items-center justify-center px-6">
         <IoClose
           className="absolute size-6 text-gray-600 top-3 right-6 hover:text-gray-800"
@@ -40,6 +62,7 @@ const AddNote = ({ setNote, btnLabel }) => {
             onChange={(e) => {
               setTitle(e.target.value);
             }}
+            value={title}
             placeholder="Add Title"
             className="w-full outline-none text-3xl bg-transparent"
           />
@@ -49,6 +72,7 @@ const AddNote = ({ setNote, btnLabel }) => {
               setContent(e.target.value);
             }}
             rows="8"
+            value={content}
             placeholder="Content..."
             className="w-full resize-none rounded-sm outline-none px-3 py-1"
           ></textarea>
@@ -96,12 +120,16 @@ const AddNote = ({ setNote, btnLabel }) => {
           </div>
           <button
             type="button"
-            disabled={isPending}
+            disabled={AddNoteIsPending || EditNoteIsPending}
             onClick={() => {
               if (title === "") {
-                setTitle("Untitled")
+                setTitle("Untitled");
               }
-              mutate({ title, content, tags, token });
+              if (btnLabel === "Edit Note") {
+                mutateEditNote({ title, content, tags, token, id: note._id });
+              } else {
+                mutateAddNote({ title, content, tags, token });
+              }
             }}
             className="w-full bg-blue-500 py-3 rounded-sm text-white disabled:opacity-50"
           >

@@ -51,7 +51,7 @@ const Note = ({ note }) => {
           <span>Delete</span>
         </button>
       </div>
-      {editNote && <AddNote setNote={setEditNote} btnLabel={"Edit Note"} />}
+      {editNote && <AddNote setNote={setEditNote} btnLabel={"Edit Note"} note={note} />}
     </div>
   );
 };
