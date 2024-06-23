@@ -42,6 +42,7 @@ const AddNote = ({ setNote, btnLabel, note }) => {
   const [content, setContent] = useState("");
   const [tags, setTags] = useState([]);
   const [message, setMessage] = useState("");
+  const [FormMessage, setFormMessage] = useState("");
 
   useEffect(() => {
     if (note) {
@@ -99,7 +100,7 @@ const AddNote = ({ setNote, btnLabel, note }) => {
                         }, 3000);
                       }
                     }
-                    if (e.target.value !== "") {
+                    if (e.target.value !== "" && tags.length < 10) {
                       setTags([...tags, e.target.value.replace(/\s+/g, " ")]);
                       e.target.value = "";
                     }
@@ -122,10 +123,20 @@ const AddNote = ({ setNote, btnLabel, note }) => {
               ))}
             </div>
           </div>
+          <p className="text-[10px] text-red-500 self-start">{FormMessage}</p>
           <button
             type="button"
             disabled={AddNoteIsPending || EditNoteIsPending}
             onClick={() => {
+              if (title.length > 45) {
+                return setFormMessage("Title is too long")
+              }
+              let words = title.split(" ");
+              for (let i = 0; i < words.length; i++) {
+                if (words[i].length > 22) {
+                  return setFormMessage("Too long word")
+                }
+              }
               if (btnLabel === "Edit Note") {
                 mutateEditNote({ title, content, tags, token, id: note._id });
               } else {
