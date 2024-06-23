@@ -133,7 +133,7 @@ const AddNote = ({ setNote, btnLabel, note }) => {
               }
               let words = title.split(" ");
               for (let i = 0; i < words.length; i++) {
-                if (words[i].length > 22) {
+                if (words[i].length > 20) {
                   return setFormMessage("Too long word")
                 }
               }

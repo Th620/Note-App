@@ -66,23 +66,20 @@ const Note = ({ note }) => {
             id: note?._id,
           });
         }}
-        className={`absolute size-5 ${
+        className={`absolute size-5 right-5 top-2 ${
           note?.isPinned ? "text-blue-500" : "text-gray-300"
         }`}
       />
-      <div
-        onClick={() => {
+      <div className="group flex flex-col border rounded-sm h-fit py-2 px-4 gap-y-2 hover:bg-slate-50 transition-colors duration-200">
+        <h3 onClick={() => {
           setShowNotePopUp(true);
-        }}
-        className="group flex flex-col border rounded-sm h-fit py-2 px-4  gap-y-2 hover:bg-slate-50 transition-colors duration-200"
-      >
-        <div className="flex justify-between w-full">
-          <h3 className="text-lg overflow-ellipsis w-full font-semibold text-blackALT mr-10">
-            {note?.title}
-          </h3>
-        </div>
+        }} className="text-lg overflow-ellipsis w-full font-semibold text-blackALT mr-10">
+          {note?.title}
+        </h3>
 
-        <p className="relative font-roboto text-blackALT w-full text-nowrap h-[25px] overflow-ellipsis overflow-hidden">
+        <p onClick={() => {
+          setShowNotePopUp(true);
+        }} className="relative font-roboto text-blackALT py-2 w-full text-nowrap h-[34px] overflow-ellipsis overflow-hidden">
           {note?.content}
         </p>
         <div
