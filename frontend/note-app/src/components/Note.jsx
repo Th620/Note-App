@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { RiPushpinLine } from "react-icons/ri";
@@ -6,10 +6,19 @@ import AddNote from "./AddNote";
 import Tag from "./Tag";
 import { deleteNote, pinNote } from "../services/note";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { isOverflow } from "../utils/isOverflow";
 
 const Note = ({ note }) => {
   let user = JSON.parse(localStorage.getItem("account"));
   let token = user?.token;
+
+  const [showOverflowBtnTag, setShowOverflowBtnTag] = useState(false);
+
+  const tagRef = useRef();
+
+  useEffect(() => {
+    setShowOverflowBtnTag(isOverflow(tagRef?.current));
+  }, [note]);
 
   const [editNote, setEditNote] = useState(false);
 
@@ -39,7 +48,7 @@ const Note = ({ note }) => {
     },
   });
   return (
-    <div className="flex flex-col border rounded-sm h-fit py-2 px-4 w-full md:w-[47%] lg:w-[31%]  gap-y-2 hover:bg-slate-50 transition-colors duration-200">
+    <div className="group flex flex-col border rounded-sm h-fit py-2 px-4 w-full md:w-[47%] lg:w-[31%]  gap-y-2 hover:bg-slate-50 transition-colors duration-200">
       <div className="flex justify-between">
         <h3 className="text-lg font-semibold text-blackALT mr-10">
           {note?.title}
@@ -47,7 +56,7 @@ const Note = ({ note }) => {
         <RiPushpinLine
           onClick={() => {
             mutatePinNote({
-              isPinned: !(note?.isPinned),
+              isPinned: !note?.isPinned,
               token,
               id: note?._id,
             });
@@ -58,15 +67,29 @@ const Note = ({ note }) => {
         />
       </div>
 
-      <p className="font-roboto text-blackALT h-[50px] overflow-hidden">
+      <p className="relative font-roboto text-blackALT w-full text-nowrap h-[25px] overflow-ellipsis overflow-hidden">
         {note?.content}
       </p>
-      <div className="flex gap-x-2">
+      <div
+        ref={tagRef}
+        className="relative flex flex-nowrap items-center gap-y-1 overflow-hidden gap-x-2 h-6"
+      >
         {note.tags.map((item) => (
           <Tag tag={item} key={item} />
         ))}
+        {showOverflowBtnTag && (
+          <button
+            className="absolute right-2 text-slate-500 hover:text-slate-600 z-20 text-[11px]"
+            type="button"
+          >
+            more...
+          </button>
+        )}
+        {showOverflowBtnTag && (
+          <div className="group-hover:bg-slate-50 transition-colors duration-200 absolute -top-1 -right-6 blur-[2px] h-8 w-20 bg-white z-10" />
+        )}
       </div>
-      <p className="my-2 text-slate-400">
+      <p className="text-slate-400">
         {new Date(note?.updatedAt).toLocaleString("default", {
           mounth: "long",
         })}
