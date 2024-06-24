@@ -50,7 +50,7 @@ const Note = ({ note }) => {
     },
   });
   return (
-    <div className="relative w-full md:w-[47%] lg:w-[31%]">
+    <div className="relative w-full md:w-[47%] lg:w-[30%]">
       {showNotePopUp && (
         <NotePopUp
           note={note}

@@ -94,4 +94,34 @@ const deleteNote = async (req, res, next) => {
   }
 };
 
-module.exports = { createNote, getNotes, editNote, pinNote, deleteNote };
+const searchByTag = async (req, res, next) => {
+  try {
+    const { keyword } = req.query;
+    console.log(keyword);
+    // const notes = await Note.find({ user: req?.user._id });
+    // let matchNotes;
+    // for (let i = 0; i < notes.length; i++) {
+    //   if (notes[i].tags.includes(keyword)) {
+    //     matchNotes = [notes[i], ...matchNotes];
+    //   }
+    // }
+
+    const notes = await Note.find({
+      tags: { $in: [keyword] },
+      user: req?.user._id,
+    });
+
+    return res.json(notes);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  createNote,
+  getNotes,
+  editNote,
+  pinNote,
+  deleteNote,
+  searchByTag,
+};

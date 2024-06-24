@@ -32,7 +32,7 @@ const NotesContainer = () => {
   }
 
   return (
-    <div className="flex flex-wrap gap-y-5 gap-x-9 w-full min-h-fit py-10 pt-24">
+    <div className="flex flex-wrap gap-y-5 gap-x-9 w-full min-h-fit py-10 pt-24 h-screen">
       {addNote && <AddNote setNote={setAddNote} btnLabel={"Add Note"} />}
 
       {isLoading && (

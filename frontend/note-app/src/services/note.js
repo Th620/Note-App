@@ -112,4 +112,22 @@ const deleteNote = async ({ token, id }) => {
   }
 };
 
-export { createNote, getNotes, editNote, pinNote, deleteNote };
+const searchByTag = async ({ token, keyword }) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await axios.get(`/notes/tags?keyword=${keyword}`, config);
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message) {
+      throw new Error(error.response.data.message);
+    } else {
+      throw new Error(error.response.data.message);
+    }
+  }
+};
+
+export { createNote, getNotes, editNote, pinNote, deleteNote, searchByTag };
