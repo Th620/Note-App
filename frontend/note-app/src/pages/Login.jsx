@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,8 @@ import { login } from "../services/user";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [error, setError] = useState("");
 
   let user = useSelector((state) => state.user);
 
@@ -34,9 +36,12 @@ const Login = () => {
       localStorage.setItem("account", JSON.stringify(data));
     },
     onError: (error) => {
+      setError(error?.message);
+      setTimeout(() => setError(""), 3000);
       console.log(error);
     },
   });
+  
 
   const onSubmit = (data) => {
     const { email, password } = data;
@@ -62,20 +67,17 @@ const Login = () => {
           </label>
           <input
             type="email"
-            {...register(
-              "email",
-                 {
-                required: {
-                  value: true,
-                  message: "email is required",
-                },
-                pattern: {
-                  value:
-                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                  message: "Enter a valid email",
-                },
-              }
-            )}
+            {...register("email", {
+              required: {
+                value: true,
+                message: "email is required",
+              },
+              pattern: {
+                value:
+                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                message: "Enter a valid email",
+              },
+            })}
             placeholder="Email"
             className={`w-full p-2 border px-3 outline-none rounded-sm ${
               errors.email ? "border-red-500" : "border-slate-300"
@@ -90,19 +92,16 @@ const Login = () => {
           <input
             type="password"
             name="password"
-            {...register(
-              "password",
-                 {
-                required: {
-                  value: true,
-                  message: "Password is required",
-                },
-                minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters",
-                },
-              }
-            )}
+            {...register("password", {
+              required: {
+                value: true,
+                message: "Password is required",
+              },
+              minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters",
+              },
+            })}
             placeholder="Password"
             className={`w-full p-2 border px-3 outline-none rounded-sm ${
               errors.password ? "border-red-500" : "border-slate-300"
@@ -113,6 +112,7 @@ const Login = () => {
               {errors.password?.message}
             </p>
           )}
+          {error && <p className="text-[10px] text-red-500 pt-2">{error}</p>}
           <button
             type="submit"
             disabled={isPending}

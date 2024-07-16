@@ -13,12 +13,10 @@ const FilteredNotesContainer = () => {
 
   const [tag, setTag] = useState("");
 
-  const [rerender, setRerender] = useState(0);
-
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ["tags"] });
     setTag(searchParam.get("keyword"))
-  }, [searchParam, tag]);
+  }, [searchParam, tag, queryClient]);
 
   const {
     data: notes,

@@ -16,7 +16,6 @@ const register = async (req, res, next) => {
     });
 
     return res.status(201).json({
-      _id: user._id,
       name: user.name,
       email: user.email,
       token: await user.generateJWT(),
@@ -33,7 +32,7 @@ const login = async (req, res, next) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      throw new Error("User doesn't exist");
+      throw new Error("Wrong email or password");
     }
 
     if (!(await user.comparePassword(password))) {
@@ -41,7 +40,6 @@ const login = async (req, res, next) => {
     }
 
     return res.json({
-      _id: user._id,
       name: user.name,
       email: user.email,
       token: await user.generateJWT(),
@@ -50,6 +48,5 @@ const login = async (req, res, next) => {
     next(error);
   }
 };
-
 
 module.exports = { register, login };

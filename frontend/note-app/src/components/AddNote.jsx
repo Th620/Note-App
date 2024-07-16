@@ -11,7 +11,7 @@ const AddNote = ({ setNote, btnLabel, note }) => {
   const queryClient = useQueryClient();
 
   const { mutate: mutateAddNote, isPending: AddNoteIsPending } = useMutation({
-    mutationFn: ({ title = "Untitled", content, tags, token }) => {
+    mutationFn: ({ title, content, tags, token }) => {
       return createNote({ title, content, tags, token });
     },
     onSuccess: (data) => {
@@ -38,7 +38,7 @@ const AddNote = ({ setNote, btnLabel, note }) => {
     },
   });
 
-  const [title, setTitle] = useState();
+  const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState([]);
   const [message, setMessage] = useState("");
@@ -115,7 +115,7 @@ const AddNote = ({ setNote, btnLabel, note }) => {
               {tags.map((tag, index) => (
                 <TagContainer
                   tag={tag}
-                  key={index}
+                  key={tag}
                   index={index}
                   tags={tags}
                   setTags={setTags}
@@ -129,18 +129,32 @@ const AddNote = ({ setNote, btnLabel, note }) => {
             disabled={AddNoteIsPending || EditNoteIsPending}
             onClick={() => {
               if (title.length > 45) {
-                return setFormMessage("Title is too long")
+                return setFormMessage("Title is too long");
               }
               let words = title.split(" ");
               for (let i = 0; i < words.length; i++) {
                 if (words[i].length > 20) {
-                  return setFormMessage("Too long word")
+                  return setFormMessage("Too long word");
                 }
               }
               if (btnLabel === "Edit Note") {
-                mutateEditNote({ title, content, tags, token, id: note._id });
+                if (title === "") {
+                  mutateEditNote({
+                    title: "Untitled",
+                    content,
+                    tags,
+                    token,
+                    id: note._id,
+                  });
+                } else {
+                  mutateEditNote({ title, content, tags, token, id: note._id });
+                }
               } else {
-                mutateAddNote({ title, content, tags, token });
+                if (title === "") {
+                  mutateAddNote({ title: "Untitled", content, tags, token });
+                } else {
+                  mutateAddNote({ title, content, tags, token });
+                }
               }
             }}
             className="w-full bg-blue-500 py-3 rounded-sm text-white disabled:opacity-50"

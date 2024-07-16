@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Note from "./Note";
 import { FaPlus } from "react-icons/fa";
 import AddNote from "./AddNote";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery} from "@tanstack/react-query";
 import { getNotes } from "../services/note";
 import { FaRegNoteSticky } from "react-icons/fa6";
 import { MdErrorOutline } from "react-icons/md";

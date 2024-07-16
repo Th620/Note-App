@@ -3,13 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import { useDispatch } from "react-redux";
 import { logout } from "../store/actions/user";
-import { useQueryClient } from "@tanstack/react-query";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const queryClient = useQueryClient();
 
   const [openMenu, setOpenMenu] = useState(false);
 
@@ -47,8 +44,8 @@ const Header = () => {
             onClick={() => {
               if (name) {
                 dispatch(logout());
-                queryClient.invalidateQueries({ queryKey: ["notes"] });
                 navigate("/");
+                window.location.reload();
               } else {
                 navigate("/register");
                 setOpenMenu(false);

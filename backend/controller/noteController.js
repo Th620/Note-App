@@ -14,7 +14,12 @@ const createNote = async (req, res, next) => {
       user: req.user._id,
       tags,
     });
-    return res.status(201).json(note);
+    return res.status(201).json({
+      title: note.title,
+      content: note.content,
+      isPinned: note.isPinned,
+      tags: note.tags,
+    });
   } catch (error) {
     next(error);
   }
@@ -22,7 +27,9 @@ const createNote = async (req, res, next) => {
 
 const getNotes = async (req, res, next) => {
   try {
-    const notes = await Note.find({ user: req.user._id });
+    const notes = await Note.find({ user: req.user._id })
+      .select("-createdAt")
+      .select("-user");
     return res.json(notes);
   } catch (error) {
     next(error);
@@ -50,7 +57,12 @@ const editNote = async (req, res, next) => {
 
     const editedNote = await note.save();
 
-    return res.json(editedNote);
+    return res.json({
+      title: editedNote.title,
+      content: editedNote.content,
+      isPinned: editedNote.isPinned,
+      tags: editedNote.tags,
+    });
   } catch (error) {
     next(error);
   }
@@ -72,7 +84,12 @@ const pinNote = async (req, res, next) => {
 
     const editedNote = await note.save();
 
-    return res.json(editedNote);
+    return res.json({
+      title: editedNote.title,
+      content: editedNote.content,
+      isPinned: editedNote.isPinned,
+      tags: editedNote.tags,
+    });
   } catch (error) {
     next(error);
   }
@@ -88,7 +105,12 @@ const deleteNote = async (req, res, next) => {
     if (!deletedNote) {
       throw new Error("Note doesn't exist");
     }
-    return res.json(deletedNote);
+    return res.json({
+      title: deletedNote.title,
+      content: deletedNote.content,
+      isPinned: deletedNote.isPinned,
+      tags: deletedNote.tags,
+    });
   } catch (error) {
     next(error);
   }
