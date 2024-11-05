@@ -112,7 +112,7 @@ const Login = () => {
               {errors.password?.message}
             </p>
           )}
-          {error && <p className="text-[10px] text-red-500 pt-2">{error}</p>}
+          {error && <p className="text-[10px] text-red-500 pt-2 capitalize">{error}</p>}
           <button
             type="submit"
             disabled={isPending}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import { useDispatch } from "react-redux";
@@ -10,6 +10,14 @@ const Header = () => {
 
   const [openMenu, setOpenMenu] = useState(false);
 
+  useEffect(() => {
+    document.body.addEventListener("click", (e) => {
+      if (!e.target.classList.contains("menu")) {
+        setOpenMenu(false);
+      }
+    });
+  }, []);
+
   const { name } = localStorage.account ? JSON.parse(localStorage.account) : "";
 
   return (
@@ -19,7 +27,7 @@ const Header = () => {
       </Link>
       <input className="hidden" type="search" name="search" />
       <div
-        className="rounded-full w-9 h-9 flex items-center justify-center text-lg bg-slate-300 test-blackALT "
+        className="rounded-full menu w-9 h-9 flex items-center justify-center text-lg bg-slate-300 test-blackALT "
         onClick={() => setOpenMenu((prev) => !prev)}
       >
         {name ? (
@@ -30,15 +38,15 @@ const Header = () => {
             name[0].toUpperCase()
           )
         ) : (
-          <CgProfile className="size-6" />
+          <CgProfile className="size-6 menu" />
         )}
       </div>
       {openMenu && (
         <div
           id="menu"
-          className="absolute top-[90%] right-8 w-1/3 md:w-1/6 flex flex-col justify-center items-center transition-all duration-300 bg-slate-200 rounded-sm py-3 gap-y-2"
+          className="absolute menu top-[90%] right-8 w-1/3 md:w-1/6 flex flex-col justify-center items-center transition-all duration-300 bg-slate-200 rounded-sm py-3 gap-y-2"
         >
-          <h6>{name}</h6>
+          <h6 className="capitalize">{name}</h6>
           <button
             type="button"
             onClick={() => {

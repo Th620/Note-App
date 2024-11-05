@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -6,10 +6,13 @@ import { useMutation } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../store/reducers/userSlice";
 import { signin } from "../services/user";
+import { MdErrorOutline } from "react-icons/md";
 
 const Singin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [error, setError] = useState(null);
 
   let user = useSelector((state) => state.user);
 
@@ -36,10 +39,10 @@ const Singin = () => {
       navigate("/");
     },
     onError: (error) => {
+      setError(error.message);
       console.log(error);
     },
   });
-
 
   const onSubmit = (data) => {
     const { name, email, password } = data;
@@ -119,7 +122,7 @@ const Singin = () => {
               },
             })}
             placeholder="Password"
-            className={`w-full p-2 border px-3 outline-none rounded-sm ${
+            className={`w-full p-2 border px-3 outline-none rounded-sm mb-2 ${
               errors.password ? "border-red-500" : "border-slate-300"
             }`}
           />
@@ -128,10 +131,11 @@ const Singin = () => {
               {errors.password?.message}
             </p>
           )}
+           {error && <p className="text-[10px] text-red-500 pt-2 capitalize">{error}</p>}
           <button
             type="submit"
             disabled={isPending}
-            className="bg-blue-500 pt-1 pb-2 text-white font-semibold rounded-sm mt-6 disabled:opacity-50"
+            className="bg-blue-500 pt-1 pb-2 text-white font-semibold rounded-sm mt-4 disabled:opacity-50"
           >
             Sign in
           </button>
