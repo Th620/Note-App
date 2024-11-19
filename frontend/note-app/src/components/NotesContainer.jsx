@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Note from "./Note";
 import { FaPlus } from "react-icons/fa";
 import AddNote from "./AddNote";
-import { useQuery} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getNotes } from "../services/note";
 import { FaRegNoteSticky } from "react-icons/fa6";
 import { MdErrorOutline } from "react-icons/md";
@@ -70,14 +70,12 @@ const NotesContainer = () => {
           .filter((note) => note?.isPinned === false)
           .map((note) => <Note note={note} key={note._id} />)}
 
-      {!addNote && (
-        <button
-          onClick={() => setAddNote(true)}
-          className="fixed bottom-6 right-4 w-12 h-12 flex items-center justify-center bg-blue-500 rounded-lg z-40"
-        >
-          <FaPlus className="text-white text-xl" />
-        </button>
-      )}
+      <button
+        onClick={() => setAddNote(true)}
+        className="fixed bottom-6 right-4 w-12 h-12 flex items-center justify-center bg-blue-500 rounded-lg z-40"
+      >
+        <FaPlus className="text-white text-xl" />
+      </button>
 
       <div className="md:hidden fixed -bottom-8 left-0 w-full h-20 bg-white z-10 blur-sm"></div>
     </div>
