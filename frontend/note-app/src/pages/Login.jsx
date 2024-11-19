@@ -124,7 +124,7 @@ const Login = () => {
         <p className="my-2 self-start">
           you don't have an account?{" "}
           <Link to={"/register"} className="text-blue-500 font-semibold">
-            Sing in
+            Sing Up
           </Link>
         </p>
       </div>

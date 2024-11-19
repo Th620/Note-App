@@ -137,7 +137,7 @@ const Singin = () => {
             disabled={isPending}
             className="bg-blue-500 pt-1 pb-2 text-white font-semibold rounded-sm mt-4 disabled:opacity-50"
           >
-            Sign in
+            Sign Up
           </button>
         </form>
 

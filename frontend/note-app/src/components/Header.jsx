@@ -61,7 +61,7 @@ const Header = () => {
             }}
             className="bg-blue-500 px-3 py-1 pb-2 rounded-sm text-white"
           >
-            {name ? "Log Out" : "Sign In"}
+            {name ? "Log Out" : "Sign Up"}
           </button>
         </div>
       )}
